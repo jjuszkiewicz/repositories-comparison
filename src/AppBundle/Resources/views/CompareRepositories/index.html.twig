@@ -1,0 +1,61 @@
+{% extends 'AppBundle::base.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}Compare repositories - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <h1>Compare repositories in GitHub</h1>
+
+    <section>
+        <div>
+            <h2>Fill form:</h2>
+            {{ form_start(form, {attr: {class: 'form-inline'}}) }}
+                {{ form_row(form.repositoryName, {attr: {placeholder: 'phalcon/cphalcon'}, label_attr: {class: 'sr-only'}}) }}
+                <strong>VS</strong>
+                {{ form_row(form.repositoryNameSecond, {attr: {placeholder: 'laravel/laravel'}, label_attr: {class: 'sr-only'}}) }}
+                <button class="btn btn-primary">Compare</button>
+            {{ form_end(form) }}
+        </div>
+        <div>
+            {#<h3>Result</h3>#}
+            {#{% if contributors is iterable %}#}
+                {#<table class="table table-responsive">#}
+                    {#<tr>#}
+                        {#<th></th>#}
+                        {#<th>#}
+                            {#<a href="{{ path('homepage', {'repo': app.request.get('repo'), 'sort': app.request.get('sort')|sortOrder('name')}) }}">#}
+                                {#Name {{ app.request.get('sort')|sortIcon('name')|raw }}#}
+                            {#</a>#}
+                        {#</th>#}
+                        {#<th>#}
+                            {#<a href="{{ path('homepage', {'repo': app.request.get('repo'), 'sort': app.request.get('sort')|sortOrder('contributions')}) }}">#}
+                                {#Contributionsme {{ app.request.get('sort')|sortIcon('contributions')|raw }}#}
+                            {#</a>#}
+                        {#</th>#}
+                    {#</tr>#}
+                    {#{% for contributor in contributors %}#}
+                        {#<tr>#}
+                            {#<td>#}
+                                {#<img src="{{ contributor.avatar }}" width="80" class="img-thumbnail" alt="">#}
+                            {#</td>#}
+                            {#<td>#}
+                                {#{{ contributor.name }}#}
+                            {#</td>#}
+                            {#<td>#}
+                                {#{{ contributor.contributions }}#}
+                            {#</td>#}
+                        {#</tr>#}
+                    {#{% else %}#}
+                        {#<tr>#}
+                            {#<td colspan="3">Repository not found</td>#}
+                        {#</tr>#}
+                    {#{% endfor %}#}
+                {#</table>#}
+            {#{% endif %}#}
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

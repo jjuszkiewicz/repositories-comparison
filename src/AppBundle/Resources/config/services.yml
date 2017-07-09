@@ -1,0 +1,9 @@
+services:
+    repository.subversion.github:
+        class: AppBundle\Repository\GithubRepository
+
+    service.compare_repositories:
+        class: AppBundle\Service\CompareRepositoriesServices
+        arguments: ["@repository.subversion.github"]
+
+
