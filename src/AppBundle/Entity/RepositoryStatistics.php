@@ -57,7 +57,7 @@ class RepositoryStatistics extends BaseRepositoryStatistics
     /**
      * @return \DateTime
      */
-    public function getLastMergedPullRequest(): \DateTime
+    public function getLastMergedPullRequest()
     {
         return $this->lastMergedPullRequest;
     }
@@ -73,7 +73,7 @@ class RepositoryStatistics extends BaseRepositoryStatistics
     /**
      * @return \DateTime
      */
-    public function getLastRelease(): \DateTime
+    public function getLastRelease()
     {
         return $this->lastRelease;
     }

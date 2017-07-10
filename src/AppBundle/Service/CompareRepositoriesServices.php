@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\BaseRepositoryStatistics;
 use AppBundle\Entity\RepositoryStatistics;
+use AppBundle\Repository\Exception\NotFoundException;
 use AppBundle\Repository\SubversionRepository;
 
 class CompareRepositoriesServices
@@ -40,6 +41,17 @@ class CompareRepositoriesServices
         $firstRepositoryStatistics->setOpenPullRequestsCount($countClosedPullRequest);
         $countClosedPullRequest = $this->subversionRepository->countOpenPullRequests($repositoryNameSecond);
         $secondRepositoryStatistics->setOpenPullRequestsCount($countClosedPullRequest);
+
+        try {
+            $lastRelease = $this->subversionRepository->fetchLastRelease($repositoryNameFirst);
+            $firstRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
+        } catch (NotFoundException $e) {
+        }
+        try {
+            $lastRelease = $this->subversionRepository->fetchLastRelease($repositoryNameSecond);
+            $secondRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
+        } catch (NotFoundException $e) {
+        }
 
         return [$firstRepositoryStatistics, $secondRepositoryStatistics];
     }

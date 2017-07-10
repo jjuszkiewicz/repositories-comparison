@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Converter\GithubClient\BaseRepositoryStatisticsConverter;
+use AppBundle\Converter\GithubClient\RepositoryReleaseConverter;
 use AppBundle\Entity\BaseRepositoryStatistics;
 use AppBundle\Entity\RepositoryPullRequest;
 use AppBundle\Entity\RepositoryRelease;
@@ -73,7 +74,19 @@ class GithubRepository implements SubversionRepository
 
     public function fetchLastRelease($repositoryName): RepositoryRelease
     {
-        // TODO: Implement fetchLastRelease() method.
+        list($owner, $projectName) = explode('/', $repositoryName);
+
+        $apiRepo = $this->client->repository()->releases()->setPerPage(1);
+        $releases = $apiRepo->all($owner, $projectName);
+
+        if (count($releases) == 0) {
+            throw new NotFoundException("Not Found release for repo: {$repositoryName}");
+        }
+
+        $release = $releases[0];
+        $converter = new RepositoryReleaseConverter();
+        return $converter->convert($release);
+
     }
 
     /**
