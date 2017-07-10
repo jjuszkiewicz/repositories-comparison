@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Converter\GithubClient\BaseRepositoryStatisticsConverter;
+use AppBundle\Converter\GithubClient\RepositoryPullRequestConverter;
 use AppBundle\Converter\GithubClient\RepositoryReleaseConverter;
 use AppBundle\Entity\BaseRepositoryStatistics;
 use AppBundle\Entity\RepositoryPullRequest;
@@ -33,6 +34,8 @@ class GithubRepository implements SubversionRepository
 
             $converter = new BaseRepositoryStatisticsConverter();
             return $converter->convert($repositoryDetails);
+        } catch (\Github\Exception\ApiLimitExceedException $e) {
+            $this->handleApiLimitException();
         } catch (\Github\Exception\RuntimeException $e) {
             return $this->handleException($e, $repositoryName);
         }
@@ -52,11 +55,15 @@ class GithubRepository implements SubversionRepository
     {
         list($owner, $projectName) = explode('/', $repositoryName);
 
-        $apiRepo = $this->client->pullRequests();
-        $paginator  = new \Github\ResultPager($this->client);
-        $parameters = [$owner, $projectName, ['status' => $status, 'per_page' => 1]];
-        $result = $paginator->fetch($apiRepo, 'all', $parameters);
-        $pagination = $paginator->getPagination();
+        try {
+            $apiRepo = $this->client->pullRequests();
+            $paginator = new \Github\ResultPager($this->client);
+            $parameters = [$owner, $projectName, ['state' => $status, 'per_page' => 1]];
+            $result = $paginator->fetch($apiRepo, 'all', $parameters);
+            $pagination = $paginator->getPagination();
+        } catch (\Github\Exception\ApiLimitExceedException $e) {
+            $this->handleApiLimitException();
+        }
 
         if (!$pagination) {
             return count($result);
@@ -69,15 +76,41 @@ class GithubRepository implements SubversionRepository
 
     public function fetchLastMergedPullRequest($repositoryName): RepositoryPullRequest
     {
-        // TODO: Implement fetchLastMergedPullRequest() method.
+        list($owner, $projectName) = explode('/', $repositoryName);
+
+        try {
+            $apiRepo = $this->client->pullRequests();
+            $paginator = new \Github\ResultPager($this->client);
+            $parameters = [$owner, $projectName, ['state' => 'closed', 'per_page' => 30]];
+            $result = $paginator->fetch($apiRepo, 'all', $parameters);
+        } catch (\Github\Exception\ApiLimitExceedException $e) {
+            $this->handleApiLimitException();
+        }
+
+        $converter = new RepositoryPullRequestConverter();
+
+        do {
+            foreach ($result as $pullRequest) {
+                if ($pullRequest['merged_at']) {
+                    return $converter->convert($pullRequest);
+                }
+            }
+            $result = $paginator->fetchNext();
+        } while ($paginator->hasNext());
+
+        throw new NotFoundException("Not Found merged pull request for repo: {$repositoryName}");
     }
 
     public function fetchLastRelease($repositoryName): RepositoryRelease
     {
         list($owner, $projectName) = explode('/', $repositoryName);
 
-        $apiRepo = $this->client->repository()->releases()->setPerPage(1);
-        $releases = $apiRepo->all($owner, $projectName);
+        try {
+            $apiRepo = $this->client->repository()->releases()->setPerPage(1);
+            $releases = $apiRepo->all($owner, $projectName);
+        } catch (\Github\Exception\ApiLimitExceedException $e) {
+            $this->handleApiLimitException();
+        }
 
         if (count($releases) == 0) {
             throw new NotFoundException("Not Found release for repo: {$repositoryName}");
@@ -101,5 +134,10 @@ class GithubRepository implements SubversionRepository
         } else {
             throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    private function handleApiLimitException(): void
+    {
+        throw new \RuntimeException("You have reached GitHub hourly limit! Please try later.");
     }
 }

@@ -26,7 +26,6 @@ class CompareRepositoriesServices
      */
     public function compare($repositoryNameFirst, $repositoryNameSecond)
     {
-
         $baseRepositoryStatistics = $this->subversionRepository->fetchRepositoryBaseStatistics($repositoryNameFirst);
         $firstRepositoryStatistics = $this->convertToRepositoryStatistics($baseRepositoryStatistics);
         $baseRepositoryStatistics = $this->subversionRepository->fetchRepositoryBaseStatistics($repositoryNameSecond);
@@ -37,26 +36,18 @@ class CompareRepositoriesServices
         $countClosedPullRequest = $this->subversionRepository->countClosedPullRequestsCount($repositoryNameSecond);
         $secondRepositoryStatistics->setClosedPullRequestsCount($countClosedPullRequest);
 
-        $countClosedPullRequest = $this->subversionRepository->countOpenPullRequests($repositoryNameFirst);
-        $firstRepositoryStatistics->setOpenPullRequestsCount($countClosedPullRequest);
-        $countClosedPullRequest = $this->subversionRepository->countOpenPullRequests($repositoryNameSecond);
-        $secondRepositoryStatistics->setOpenPullRequestsCount($countClosedPullRequest);
+        $countOpenPullRequest = $this->subversionRepository->countOpenPullRequests($repositoryNameFirst);
+        $firstRepositoryStatistics->setOpenPullRequestsCount($countOpenPullRequest);
+        $countOpenPullRequest = $this->subversionRepository->countOpenPullRequests($repositoryNameSecond);
+        $secondRepositoryStatistics->setOpenPullRequestsCount($countOpenPullRequest);
 
-        try {
-            $lastRelease = $this->subversionRepository->fetchLastRelease($repositoryNameFirst);
-            $firstRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
-        } catch (NotFoundException $e) {
-        }
-        try {
-            $lastRelease = $this->subversionRepository->fetchLastRelease($repositoryNameSecond);
-            $secondRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
-        } catch (NotFoundException $e) {
-        }
+        $this->setLastRelease($firstRepositoryStatistics, $secondRepositoryStatistics);
+        $this->setLastMeredPullRequest($firstRepositoryStatistics, $secondRepositoryStatistics);
 
         return [$firstRepositoryStatistics, $secondRepositoryStatistics];
     }
 
-    private function convertToRepositoryStatistics(BaseRepositoryStatistics $baseRepositoryStatistics)
+    private function convertToRepositoryStatistics(BaseRepositoryStatistics $baseRepositoryStatistics): RepositoryStatistics
     {
         $repositoryStatistics = new RepositoryStatistics();
         $repositoryStatistics->setName($baseRepositoryStatistics->getName());
@@ -64,8 +55,43 @@ class CompareRepositoriesServices
         $repositoryStatistics->setWatchersCount($baseRepositoryStatistics->getWatchersCount());
         $repositoryStatistics->setStarsCount($baseRepositoryStatistics->getStarsCount());
         $repositoryStatistics->setForksCount($baseRepositoryStatistics->getForksCount());
-        return$repositoryStatistics;
+        return $repositoryStatistics;
     }
 
+    /**
+     * @param RepositoryStatistics $firstRepositoryStatistics
+     * @param RepositoryStatistics $secondRepositoryStatistics
+     */
+    private function setLastRelease(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics): void
+    {
+        try {
+            $lastRelease = $this->subversionRepository->fetchLastRelease($firstRepositoryStatistics->getName());
+            $firstRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
+        } catch (NotFoundException $e) {
+        }
+        try {
+            $lastRelease = $this->subversionRepository->fetchLastRelease($secondRepositoryStatistics->getName());
+            $secondRepositoryStatistics->setLastRelease($lastRelease->getPublishedAt());
+        } catch (NotFoundException $e) {
+        }
+    }
+
+    /**
+     * @param RepositoryStatistics $firstRepositoryStatistics
+     * @param RepositoryStatistics $secondRepositoryStatistics
+     */
+    private function setLastMeredPullRequest(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics): void
+    {
+        try {
+            $lastMergedPullRequest = $this->subversionRepository->fetchLastMergedPullRequest($firstRepositoryStatistics->getName());
+            $firstRepositoryStatistics->setLastMergedPullRequest($lastMergedPullRequest->getMergedAt());
+        } catch (NotFoundException $e) {
+        }
+        try {
+            $lastMergedPullRequest = $this->subversionRepository->fetchLastMergedPullRequest($secondRepositoryStatistics->getName());
+            $secondRepositoryStatistics->setLastMergedPullRequest($lastMergedPullRequest->getMergedAt());
+        } catch (NotFoundException $e) {
+        }
+    }
 
 }

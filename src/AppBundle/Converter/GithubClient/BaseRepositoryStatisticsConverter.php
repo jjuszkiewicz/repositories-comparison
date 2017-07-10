@@ -13,10 +13,10 @@ class BaseRepositoryStatisticsConverter implements ConverterInterface
     public function convert($object)
     {
         $baseRepositoryStatistics = new BaseRepositoryStatistics();
-        $baseRepositoryStatistics->setName($object['name']);
+        $baseRepositoryStatistics->setName($object['full_name']);
         $baseRepositoryStatistics->setForksCount($object['forks_count']);
         $baseRepositoryStatistics->setStarsCount($object['stargazers_count']);
-        $baseRepositoryStatistics->setWatchersCount($object['watchers_count']);
+        $baseRepositoryStatistics->setWatchersCount($object['subscribers_count']);
         $baseRepositoryStatistics->setLastUpdate(new \DateTime($object['updated_at']));
 
         return $baseRepositoryStatistics;

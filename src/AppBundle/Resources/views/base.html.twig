@@ -32,6 +32,12 @@
             </div>
         </nav>
         <div class="container">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-icon alert-success alert-dismissible fade in" role="alert"><i class="mdi mdi-check-all"></i> {{ flashMessage|trans }}</div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">{{ flashMessage|trans }}</div>
+            {% endfor %}
             {% block content %}{% endblock %}
         </div>
 

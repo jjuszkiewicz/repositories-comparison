@@ -4,7 +4,7 @@
 {% block title %}Compare repositories - {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h1>Compare repositories in GitHub</h1>
+    <h1>Compare repositories in Gitdub</h1>
 
     <section>
         <div>
@@ -16,43 +16,110 @@
                 <button class="btn btn-primary">Compare</button>
             {{ form_end(form) }}
         </div>
-        <div>
-            {#<h3>Result</h3>#}
-            {#{% if contributors is iterable %}#}
-                {#<table class="table table-responsive">#}
-                    {#<tr>#}
-                        {#<th></th>#}
-                        {#<th>#}
-                            {#<a href="{{ path('homepage', {'repo': app.request.get('repo'), 'sort': app.request.get('sort')|sortOrder('name')}) }}">#}
-                                {#Name {{ app.request.get('sort')|sortIcon('name')|raw }}#}
-                            {#</a>#}
-                        {#</th>#}
-                        {#<th>#}
-                            {#<a href="{{ path('homepage', {'repo': app.request.get('repo'), 'sort': app.request.get('sort')|sortOrder('contributions')}) }}">#}
-                                {#Contributionsme {{ app.request.get('sort')|sortIcon('contributions')|raw }}#}
-                            {#</a>#}
-                        {#</th>#}
-                    {#</tr>#}
-                    {#{% for contributor in contributors %}#}
-                        {#<tr>#}
-                            {#<td>#}
-                                {#<img src="{{ contributor.avatar }}" width="80" class="img-thumbnail" alt="">#}
-                            {#</td>#}
-                            {#<td>#}
-                                {#{{ contributor.name }}#}
-                            {#</td>#}
-                            {#<td>#}
-                                {#{{ contributor.contributions }}#}
-                            {#</td>#}
-                        {#</tr>#}
-                    {#{% else %}#}
-                        {#<tr>#}
-                            {#<td colspan="3">Repository not found</td>#}
-                        {#</tr>#}
-                    {#{% endfor %}#}
-                {#</table>#}
-            {#{% endif %}#}
-        </div>
+        {% if compareRepositoryStatistics %}
+            <div>
+                <h3>
+                    Compare
+                    {% for repo in compareRepositoryStatistics %}
+                        {{ repo.name }}
+                        {% if not loop.last %}vs{% endif %}
+                    {% endfor %}
+                </h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <td></td>
+                            {% for repo in compareRepositoryStatistics %}
+                            <th>
+                                {{ repo.name }}
+                            </th>
+                            {% endfor %}
+
+                        </tr>
+                        <tr>
+                            <td>
+                                forks
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.forksCount }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                stars
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.starsCount }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                watchers
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.watchersCount }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                last update
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.lastUpdate|date('Y.m.d H:i') }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                latest release
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.lastRelease ? repo.lastRelease|date('Y.m.d H:i') : '-' }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                open pull requests
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.openPullRequestsCount }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                closed pull requests
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.closedPullRequestsCount }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>
+                                last merged pull request
+                            </td>
+                            {% for repo in compareRepositoryStatistics %}
+                                <td>
+                                    {{ repo.lastMergedPullRequest ? repo.lastMergedPullRequest|date('Y.m.d H:i') : '-' }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}
 
