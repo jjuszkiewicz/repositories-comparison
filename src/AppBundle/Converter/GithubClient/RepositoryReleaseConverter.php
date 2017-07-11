@@ -9,6 +9,10 @@ use AppBundle\Entity\RepositoryRelease;
 
 class RepositoryReleaseConverter implements ConverterInterface
 {
+    /**
+     * @param $object
+     * @return RepositoryRelease
+     */
     public function convert($object)
     {
         $repositoryRelease = new RepositoryRelease();

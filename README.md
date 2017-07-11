@@ -24,5 +24,16 @@ Website you can see on [localhost:8000](http://localhost:8000)
 
 API documentation
 -----------------
+
+Document API is on address:
     
     http://localhost:8000/api/doc
+    
+    
+Run tests
+---------
+
+TO run test make command:
+
+    vendor/phpunit/phpunit/phpunit
+ 
