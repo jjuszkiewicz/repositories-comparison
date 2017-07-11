@@ -14,7 +14,11 @@ Go to project dir and [Download Composer](https://getcomposer.org/download/)
     
     php composer.phar install
     
-On the end of composer install task program ask you about parameters, please keep default values:
+On the end of composer install task program ask you about parameters, if you want use cache please fill below params otherside keep default values:
+
+    cache_redis_enabled: true
+    cache_redis_host: <redis_host>
+    cache_redis_port: <redis_port>
 
 Run development server:
     

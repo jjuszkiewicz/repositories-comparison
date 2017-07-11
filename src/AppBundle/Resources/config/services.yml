@@ -1,6 +1,14 @@
 services:
+    AppBundle\Factory\GithubClientFactory: ~
+
+    github.client:
+        factory: 'AppBundle\Factory\GithubClientFactory:newInstance'
+        class: \Github\Client
+        arguments: ["%cache_redis_enabled%", "%cache_redis_host%", "%cache_redis_port%"]
+
     repository.subversion.github:
         class: AppBundle\Repository\GithubRepository
+        arguments: ["@github.client"]
 
     service.compare_repositories:
         class: AppBundle\Service\CompareRepositoriesServices

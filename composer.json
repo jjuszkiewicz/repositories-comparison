@@ -21,6 +21,7 @@
     },
     "require": {
         "php": ">=7.1",
+        "cache/redis-adapter": "^0.5.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/rest-bundle": "^2.2",

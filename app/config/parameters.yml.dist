@@ -17,3 +17,7 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    cache_redis_enabled: false
+    cache_redis_host: ~
+    cache_redis_port: ~

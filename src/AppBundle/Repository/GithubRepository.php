@@ -18,9 +18,9 @@ class GithubRepository implements SubversionRepository
      */
     private $client;
 
-    public function __construct()
+    public function __construct(\Github\Client $githubClient)
     {
-        $this->client = new \Github\Client();
+        $this->client = $githubClient;
     }
 
     public function fetchRepositoryBaseStatistics($repositoryName): BaseRepositoryStatistics
