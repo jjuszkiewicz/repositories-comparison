@@ -6,4 +6,9 @@ services:
         class: AppBundle\Service\CompareRepositoriesServices
         arguments: ["@repository.subversion.github"]
 
+    app.api.compare_repositories.controller:
+        class: AppBundle\Controller\Api\CompareRepositoriesController
+        calls:
+            - ['setContainer', [ "@service_container" ] ]
+
 

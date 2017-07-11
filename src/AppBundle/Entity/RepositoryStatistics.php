@@ -2,25 +2,34 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as JMS;
 
 class RepositoryStatistics extends BaseRepositoryStatistics
 {
     /**
+     * @JMS\Type("integer")
+     *
      * @var int
      */
-    private $openPullRequestsCount;
+    protected $openPullRequestsCount;
     /**
+     * @JMS\Type("integer")
+     *
      * @var int
      */
-    private $closedPullRequestsCount;
+    protected $closedPullRequestsCount;
     /**
+     * @JMS\Type("DateTime")
+     *
      * @var \DateTime
      */
-    private $lastMergedPullRequest;
+    protected $lastMergedPullRequest;
     /**
+     * @JMS\Type("DateTime")
+     *
      * @var \DateTime
      */
-    private $lastRelease;
+    protected $lastRelease;
 
     /**
      * @return int

@@ -32,6 +32,8 @@ class CompareRepositoriesController extends Controller
             }
         } catch (\RuntimeException $e) {
             $this->addFlash('error', $e->getMessage());
+        } catch (\AppBundle\Repository\Exception\NotFoundException $e) {
+            $this->addFlash('error', $e->getMessage());
         }
 
         return $this->render('AppBundle:CompareRepositories:index.html.twig', [

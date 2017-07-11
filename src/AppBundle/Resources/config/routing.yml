@@ -5,7 +5,7 @@ homepage:
 api_repo_compare:
     type: rest
     prefix: '/api'
-    resource: AppBundle\Controller\Api\CompareRepositoriesController
+    resource: "app.api.compare_repositories.controller"
 
 api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"

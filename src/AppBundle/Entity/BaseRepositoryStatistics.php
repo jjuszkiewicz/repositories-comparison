@@ -2,29 +2,40 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as JMS;
 
 class BaseRepositoryStatistics
 {
     /**
+     * @JMS\Type("string")
+     *
      * @var string
      */
-    private $name;
+    protected $name;
     /**
+     * @JMS\Type("integer")
+     *
      * @var int
      */
-    private $forksCount;
+    protected $forksCount;
     /**
+     * @JMS\Type("integer")
+     *
      * @var int
      */
-    private $starsCount;
+    protected $starsCount;
     /**
+     * @JMS\Type("integer")
+     *
      * @var int
      */
-    private $watchersCount;
+    protected $watchersCount;
     /**
+     * @JMS\Type("DateTime")
+     *
      * @var \DateTime
      */
-    private $lastUpdate;
+    protected $lastUpdate;
 
     /**
      * @return string

@@ -21,3 +21,8 @@ Run development server:
     php bin/console server:run
     
 Website you can see on [localhost:8000](http://localhost:8000)
+
+API documentation
+-----------------
+    
+    http://localhost:8000/api/doc
