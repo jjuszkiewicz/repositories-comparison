@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Repository\SearchRepository;
 use AppBundle\Service\CompareRepositoriesServices;
-use AppBundle\Sort\Sort;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,9 +26,9 @@ class CompareRepositoriesController extends Controller
                         'repositoryNameSecond' => $request->get('repo2')
                     ]
                 );
-                /** @var CompareRepositoriesServices $projectContributorsService */
-                $projectContributorsService = $this->get('service.compare_repositories');
-                $compareRepositoryStatistics = $projectContributorsService->compare($request->get('repo'), $request->get('repo2'));
+                /** @var CompareRepositoriesServices $compareRepositoriesServices */
+                $compareRepositoriesServices = $this->get('service.compare_repositories');
+                $compareRepositoryStatistics = $compareRepositoriesServices->compare($request->get('repo'), $request->get('repo2'));
             }
         } catch (\RuntimeException $e) {
             $this->addFlash('error', $e->getMessage());

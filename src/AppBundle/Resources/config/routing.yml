@@ -1,3 +1,12 @@
 homepage:
     path:     /
     defaults: { _controller: AppBundle:CompareRepositories:index }
+
+api_repo_compare:
+    type: rest
+    prefix: '/api'
+    resource: AppBundle\Controller\Api\CompareRepositoriesController
+
+api_doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
