@@ -3,7 +3,8 @@ Installation
 
 **Requiers:**
  * PHP >=7.0
- * Redist - optional
+ * Redist - optional (cache) 
+ * production adres: [http://87.98.235.58](http://87.98.235.58)
 
 
 Clone repository:
@@ -24,14 +25,20 @@ Run development server:
     
     php bin/console server:run
     
-Website you can see on [localhost:8000](http://localhost:8000)
+Website you can see on [localhost:8000](http://localhost:8000) or this project is on address: [http://87.98.235.58](http://87.98.235.58)
 
 API documentation
 -----------------
 
 Document API is on address:
     
+Localhost:
+
     http://localhost:8000/api/doc
+    
+Production:
+
+    http://87.98.235.58/api/doc
     
     
 Run tests
