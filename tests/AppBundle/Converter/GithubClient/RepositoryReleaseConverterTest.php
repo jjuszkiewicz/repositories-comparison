@@ -18,7 +18,7 @@ class RepositoryReleaseConverterTest extends KernelTestCase
         $this->assertEquals(new \DateTime($object['created_at']), $repositoryRelease->getCreatedAt());
         $this->assertEquals(new \DateTime($object['published_at']), $repositoryRelease->getPublishedAt());
         $this->assertEquals($object['id'], $repositoryRelease->getId());
-        $this->assertEquals($object['tag_name'], $repositoryRelease->getTagName());
+
     }
 
     private function getFixture($fileName)
