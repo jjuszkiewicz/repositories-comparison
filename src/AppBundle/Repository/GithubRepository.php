@@ -136,7 +136,7 @@ class GithubRepository implements SubversionRepository
         }
     }
 
-    private function handleApiLimitException(): void
+    private function handleApiLimitException()
     {
         throw new \RuntimeException("You have reached GitHub hourly limit! Please try later.");
     }

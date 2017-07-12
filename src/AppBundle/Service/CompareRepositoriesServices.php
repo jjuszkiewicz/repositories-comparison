@@ -62,7 +62,7 @@ class CompareRepositoriesServices
      * @param RepositoryStatistics $firstRepositoryStatistics
      * @param RepositoryStatistics $secondRepositoryStatistics
      */
-    private function setLastRelease(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics): void
+    private function setLastRelease(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics)
     {
         try {
             $lastRelease = $this->subversionRepository->fetchLastRelease($firstRepositoryStatistics->getName());
@@ -80,7 +80,7 @@ class CompareRepositoriesServices
      * @param RepositoryStatistics $firstRepositoryStatistics
      * @param RepositoryStatistics $secondRepositoryStatistics
      */
-    private function setLastMeredPullRequest(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics): void
+    private function setLastMeredPullRequest(RepositoryStatistics $firstRepositoryStatistics, RepositoryStatistics $secondRepositoryStatistics)
     {
         try {
             $lastMergedPullRequest = $this->subversionRepository->fetchLastMergedPullRequest($firstRepositoryStatistics->getName());
