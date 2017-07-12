@@ -2,7 +2,7 @@ Installation
 ============
 
 **Requiers:**
- * PHP 7.1
+ * PHP >=7.0
  * Redist - optional
 
 
@@ -37,7 +37,7 @@ Document API is on address:
 Run tests
 ---------
 
-TO run test make command:
+To run test make command in project dir:
 
-    vendor/phpunit/phpunit/phpunit
+    ./vendor/phpunit/phpunit/phpunit
  
