@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jjuszkiewicz/repositories-comparison.svg?branch=master)](https://travis-ci.org/jjuszkiewicz/repositories-comparison)
+
 Installation
 ============
 
